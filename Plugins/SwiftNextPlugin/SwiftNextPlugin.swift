@@ -35,8 +35,8 @@ struct SwiftNextPlugin: BuildToolPlugin {
 
     return [
       .buildCommand(
-        displayName: "SwiftNext",
-        executable: try context.tool(named: "SwiftNext").path,
+        displayName: "SwiftNextGenerator",
+        executable: try context.tool(named: "SwiftNextGenerator").path,
         arguments: [
           tempDirectory,
           outputDirectory,

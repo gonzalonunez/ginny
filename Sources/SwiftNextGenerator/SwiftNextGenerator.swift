@@ -17,7 +17,7 @@ struct FileHandler {
 }
 
 @main
-struct SwiftNext {
+struct SwiftNextGenerator {
 
   static func main() async throws {
     let inputDirectory = CommandLine.arguments[1]
@@ -68,7 +68,9 @@ struct SwiftNext {
     routes: [FileHandler])
   {
     let registerRoutesBody = """
-
+    app.get("") { _ in
+      return "Hello, world"
+    }
     """
 
     let contents = """

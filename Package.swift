@@ -11,8 +11,8 @@ let package = Package(
       targets: ["Example"]),
 
     .executable(
-      name: "SwiftNext",
-      targets: ["SwiftNext"]),
+      name: "SwiftNextGenerator",
+      targets: ["SwiftNextGenerator"]),
 
     .plugin(
       name: "SwiftNextPlugin",
@@ -32,14 +32,14 @@ let package = Package(
       ]),
 
     .executableTarget(
-      name: "SwiftNext",
+      name: "SwiftNextGenerator",
       dependencies: []),
 
     .plugin(
       name: "SwiftNextPlugin",
       capability: .buildTool(),
       dependencies: [
-        "SwiftNext",
+        "SwiftNextGenerator",
       ]),
   ]
 )
