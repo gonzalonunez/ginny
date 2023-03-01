@@ -16,7 +16,7 @@ extension String {
 
     guard
       firstMatchRange.location != NSNotFound,
-        let matchRange = Range(firstMatchRange, in: self)
+      let matchRange = Range(firstMatchRange, in: self)
     else {
       return self
     }
