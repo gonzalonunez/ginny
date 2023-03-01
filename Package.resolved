@@ -163,6 +163,15 @@
       }
     },
     {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax",
+      "state" : {
+        "branch" : "cd772d1",
+        "revision" : "cd772d14a481da4fb0507e98c4c3e848afa8174b"
+      }
+    },
+    {
       "identity" : "vapor",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",

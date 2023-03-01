@@ -21,22 +21,18 @@ struct SwiftNextPlugin: BuildToolPlugin {
   {
     let apiDirectory = target.directory.appending(["api"])
     let tempDirectory = context.pluginWorkDirectory.appending(["tmp"])
-
-    let inputPaths = try copyFiles(from: apiDirectory, to: tempDirectory)
-    var outputPaths: [Path] = []
-
     let outputDirectory = context.pluginWorkDirectory.appending(["api"])
-
-    let appPath = outputDirectory.appending(["App.swift"])
-    outputPaths.append(appPath)
-
-    let routesPath = outputDirectory.appending(["Routes.swift"])
-    outputPaths.append(routesPath)
+    
+    let inputPaths = try copyFiles(from: apiDirectory, to: tempDirectory)
+    let outputPaths = [
+      outputDirectory.appending(["App.generated.swift"]),
+      outputDirectory.appending(["Routes.generated.swift"])
+    ]
 
     return [
       .buildCommand(
-        displayName: "SwiftNextGenerator",
-        executable: try context.tool(named: "SwiftNextGenerator").path,
+        displayName: "SwiftNextCLI",
+        executable: try context.tool(named: "SwiftNextCLI").path,
         arguments: [
           tempDirectory,
           outputDirectory,
@@ -50,34 +46,30 @@ struct SwiftNextPlugin: BuildToolPlugin {
     from apiDirectory: Path,
     to tempDirectory: Path) throws -> [Path]
   {
-    if !FileManager.default.fileExists(atPath: tempDirectory.string, isDirectory: nil) {
-      try FileManager.default.createDirectory(
-        atPath: tempDirectory.string,
-        withIntermediateDirectories: false)
+    /// Delete `tempDirectory` if it exists (from a previous run)
+    if FileManager.default.fileExists(atPath: tempDirectory.string, isDirectory: nil) {
+      try FileManager.default.removeItem(atPath: tempDirectory.string)
     }
 
+    /// Copy all files over from `apiDirectory` to `tempDirectory`
+    try FileManager.default.copyItem(
+      atPath: apiDirectory.string,
+      toPath: tempDirectory.string)
+
+    /// Return input paths by doing a deep search of the `apiDirectory` directory
     guard let enumerator = FileManager.default.enumerator(atPath: apiDirectory.string) else {
       throw SwiftNextPluginError.missingAPIDirectory
     }
 
     var inputPaths: [Path] = []
-
     while let file = enumerator.nextObject() as? String {
       let swiftSuffix = ".swift"
       guard file.hasSuffix(swiftSuffix) else {
         continue
       }
-
       let inputPath = apiDirectory.appending([file])
       inputPaths.append(inputPath)
-
-      let didCreate = FileManager.default.createFile(
-        atPath: tempDirectory.appending([file]).string,
-        contents: FileManager.default.contents(atPath: inputPath.string))
-
-      assert(didCreate)
     }
-
     return inputPaths
   }
 }
