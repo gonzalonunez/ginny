@@ -1,16 +1,16 @@
 //
-//  index.swift
+//  hello.index.swift
 //  
 //
-//  Created by Gonzalo Nuñez on 2/24/23.
+//  Created by Gonzalo Nuñez on 3/1/23.
 //
 
 import Foundation
 import SwiftNext
 import Vapor
 
-struct Index: RequestHandler {
-  
+struct HelloIndex: RequestHandler {
+
   var method: HTTPMethod {
     .GET
   }

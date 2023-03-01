@@ -15,8 +15,8 @@ enum SwiftNextError: Error {
   case missingStructDeclaration
 }
 
-struct File {
-  var name: String
+struct RouteFile {
+  var routeName: String
   var url: URL
 }
 
@@ -26,35 +26,11 @@ struct SwiftNextCLI {
   static func main() async throws {
     let inputDirectory = CommandLine.arguments[1]
     let outputDirectory = CommandLine.arguments[2]
-
-    guard let enumerator = FileManager.default.enumerator(atPath: inputDirectory) else {
-      throw SwiftNextError.missingInputDirectory
-    }
-
-    var routes: [File] = []
-    while let file = enumerator.nextObject() as? String {
-      let indexSuffix = "index"
-      let swiftSuffix = ".swift"
-      guard file.hasSuffix(swiftSuffix) else {
-        continue
-      }
-
-      var routeName = "api/" + file.dropLast(swiftSuffix.count)
-      if routeName.hasSuffix(indexSuffix) {
-        routeName = String(routeName.dropLast(indexSuffix.count))
-      }
-
-      let inputPath = inputDirectory.appending("/" + file)
-      let url = URL(fileURLWithPath: inputPath)
-      let file = File(name: routeName, url: url)
-      routes.append(file)
-    }
-
-    try generateAppFile(inDirectory: outputDirectory)
-    try generateRoutesFile(inDirectory: outputDirectory, routes: routes)
+    try generateAppFile(in: outputDirectory)
+    try generateRoutesFile(from: inputDirectory, in: outputDirectory)
   }
 
-  static func generateAppFile(inDirectory directory: String) throws {
+  static func generateAppFile(in directory: String) throws {
     let contents = """
     import Vapor
 
@@ -67,32 +43,28 @@ struct SwiftNextCLI {
     }
     """
 
-    let fileName = directory.appending("/" + "App.generated.swift")
-
-    let didCreate = FileManager.default.createFile(
-      atPath: fileName,
+    try FileManager.default.createFileThrows(
+      atPath: directory.appending("/" + "App.generated.swift"),
       contents: contents.data(using: .utf8))
-
-    if !didCreate {
-      throw SwiftNextError.failedToCreateFile(fileName)
-    }
   }
 
   static func generateRoutesFile(
-    inDirectory directory: String,
-    routes: [File]) throws
+    from inputDirectory: String,
+    in directory: String) throws
   {
+    let routeFiles = try findRouteFiles(in: inputDirectory)
+
     var registrations: [String] = []
-    for fileHandler in routes {
+    for fileHandler in routeFiles {
       let source = try String(contentsOf: fileHandler.url, encoding: .utf8)
       let sourceFile = Parser.parse(source: source)
 
       let visitor = RequestHandlerVisitor(viewMode: .sourceAccurate)
       visitor.walk(sourceFile)
 
-      for identifiers in visitor.identifiers {
+      for identifier in visitor.identifiers {
         registrations.append("""
-        \(identifiers)().register(in: app, for: \"\(fileHandler.name)\")
+        \(identifier)().register(in: app, for: \"\(fileHandler.routeName)\")
         """)
       }
     }
@@ -103,19 +75,40 @@ struct SwiftNextCLI {
     extension SwiftNext {
 
       static func registerRoutes(app: Application) {
-        \(registrations.joined(separator: "\n"))
+        \(registrations.joined(separator: "\n\t\t"))
       }
     }
     """
 
-    let fileName = directory.appending("/" + "Routes.generated.swift")
-
-    let didCreate = FileManager.default.createFile(
-      atPath: fileName,
+    try FileManager.default.createFileThrows(
+      atPath: directory.appending("/" + "Routes.generated.swift"),
       contents: contents.data(using: .utf8))
+  }
 
-    if !didCreate {
-      throw SwiftNextError.failedToCreateFile(fileName)
+  static func findRouteFiles(in inputDirectory: String) throws -> [RouteFile] {
+    guard let enumerator = FileManager.default.enumerator(atPath: inputDirectory) else {
+      throw SwiftNextError.missingInputDirectory
     }
+
+    var routeFiles: [RouteFile] = []
+    while let file = enumerator.nextObject() as? String {
+      let swiftSuffix = ".swift"
+      guard file.hasSuffix(swiftSuffix) else {
+        continue
+      }
+
+      let routeComponents = try ["api"] + file
+        .dropLast(swiftSuffix.count)
+        .split(separator: "/")
+        .filter { !$0.hasSuffix("index") }
+        .map { try String($0).transformingParametersIfNeeded() }
+
+      let inputPath = inputDirectory.appending("/" + file)
+      let url = URL(fileURLWithPath: inputPath)
+      let file = RouteFile(routeName: routeComponents.joined(separator: "/"), url: url)
+      routeFiles.append(file)
+    }
+
+    return routeFiles
   }
 }

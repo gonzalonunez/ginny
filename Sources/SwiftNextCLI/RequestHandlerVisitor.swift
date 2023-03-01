@@ -8,6 +8,8 @@
 import Foundation
 import SwiftSyntax
 
+// MARK: - RequestHandlerVisitor
+
 final class RequestHandlerVisitor: SyntaxVisitor {
   var identifiers: [String] = []
 
@@ -24,6 +26,8 @@ final class RequestHandlerVisitor: SyntaxVisitor {
   }
 }
 
+// MARK: - Syntax
+
 extension Syntax {
 
   var classOrStructIdentifier: String? {
@@ -38,6 +42,8 @@ extension Syntax {
     return tokenSyntax.text
   }
 }
+
+// MARK: - TypeInheritanceClauseSyntax
 
 extension TypeInheritanceClauseSyntax {
 

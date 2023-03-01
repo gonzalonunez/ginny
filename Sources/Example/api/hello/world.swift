@@ -9,6 +9,8 @@ import Foundation
 import SwiftNext
 import Vapor
 
+// MARK - GetWorld
+
 struct GetWorld: RequestHandler {
 
   var method: HTTPMethod {
@@ -16,22 +18,24 @@ struct GetWorld: RequestHandler {
   }
 
   func handle(req: Request) throws -> String {
-    "Hello, world"
+    "Hello, world!"
   }
 }
 
-struct PostWorld: AsyncRequestHandler {
+// MARK - PostWorld
+
+struct PostWorld: RequestHandler {
 
   var method: HTTPMethod {
     .POST
   }
 
-  func handle(req: Request) async throws -> String {
-    return await getString()
-  }
-
-  func getString() async -> String {
-    "Time to post"
+  func handle(req: Request) throws -> String {
+    let body = try req.content.decode(PostWorldBody.self)
+    return "Hello, \(body.name)!"
   }
 }
 
+struct PostWorldBody: Content {
+  var name: String
+}
