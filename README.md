@@ -107,14 +107,19 @@ Ginny supports most of Vapor's routing features at the moment. Support for missi
 #### Supported
 
 - [x] [Route parameters](https://docs.vapor.codes/basics/routing/#route-parameters): Vapor's route parameters are supported with a `[]` syntax. For example, a file named `api/user/[id].swift` ends up getting registered with Vapor as `api/user/:id`
+
 - [x] [Catchall parameters](https://docs.vapor.codes/basics/routing/#catchall): Vapor's catchall parameters are supported with a `...` syntax. For example, a file named `api/user/[...slug].swift` ends up getting registered with Vapor as `api/user/***` and allows you to later retrieve the catchall. The `slug` part does not matter, you can name that whatever you'd like (and you'll have to if you want to have multiple files in the same module that support catchall parameters because you can't have two files in the same Swift module with the same name)
 
 #### Not yet supported
 
-- [ ] [Anything parameters](https://docs.vapor.codes/basics/routing/#anything): Vapor's discarded parameters, `*`, are not currently supported, let us know if you'd like them to be supported
-- [ ] [Route groups and middleware](https://docs.vapor.codes/basics/routing/#route-groups): Vapor's route groups are not currently supported, but you can easily imagine automatically generated support for them based on folders and special config files.
-- [ ] [Metadata](https://docs.vapor.codes/basics/routing/#metadata): Route metadata is also not currently supported, but can be easily accomodated for.
+- [ ] [Anything parameters](https://docs.vapor.codes/basics/routing/#anything)
+- [ ] [Route groups and middleware](https://docs.vapor.codes/basics/routing/#route-groups)
+- [ ] [Metadata](https://docs.vapor.codes/basics/routing/#metadata)
 
 ## Inspiration
 
 Ginny was inspired by the way [Vercel](https://vercel.com/home) does routing. I'm a big fan of all things Vercel and Next.js, I highly recommend taking a look.
+
+## Why Ginny?
+
+[Ginny Strazisar](https://www.ithistory.org/honor-roll/ms-ginny-strazisar) developed the [first true IP router](<https://en.wikipedia.org/wiki/Router_(computing)#cite_ref-26>) in 1975.
