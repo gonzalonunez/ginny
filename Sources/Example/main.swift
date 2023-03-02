@@ -5,13 +5,11 @@
 //  Created by Gonzalo Nuñez on 2/24/23.
 //
 
+import Ginny
 import Vapor
 
 let app = try Application(.detect())
 defer { app.shutdown() }
 
-app.get("") { _ in
-  "Hello, world!"
-}
-
-try Ginny.run(app: app)
+app.registerRoutes()
+try app.run()

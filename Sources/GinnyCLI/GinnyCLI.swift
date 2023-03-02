@@ -26,26 +26,7 @@ struct GinnyCLI {
   static func main() async throws {
     let inputDirectory = CommandLine.arguments[1]
     let outputDirectory = CommandLine.arguments[2]
-    try generateAppFile(in: outputDirectory)
     try generateRoutesFile(from: inputDirectory, in: outputDirectory)
-  }
-
-  static func generateAppFile(in directory: String) throws {
-    let contents = """
-    import Vapor
-
-    enum Ginny {
-
-      static func run(app: Application) throws {
-        registerRoutes(app: app)
-        try app.run()
-      }
-    }
-    """
-
-    try FileManager.default.createFileThrows(
-      atPath: directory.appending("/" + "App.generated.swift"),
-      contents: contents.data(using: .utf8))
   }
 
   static func generateRoutesFile(
@@ -64,7 +45,7 @@ struct GinnyCLI {
 
       for identifier in visitor.identifiers {
         registrations.append("""
-        \(identifier)().register(in: app, for: \"\(fileHandler.routeName)\")
+        \(identifier)().register(in: self, for: \"\(fileHandler.routeName)\")
         """)
       }
     }
@@ -72,9 +53,9 @@ struct GinnyCLI {
     let contents = """
     import Vapor
 
-    extension Ginny {
+    extension Application {
 
-      static func registerRoutes(app: Application) {
+      func registerRoutes() {
         \(registrations.joined(separator: "\n\t\t"))
       }
     }

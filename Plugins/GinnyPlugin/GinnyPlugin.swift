@@ -25,7 +25,6 @@ struct GinnyPlugin: BuildToolPlugin {
     
     let inputPaths = try copyFiles(from: apiDirectory, to: tempDirectory)
     let outputPaths = [
-      outputDirectory.appending(["App.generated.swift"]),
       outputDirectory.appending(["Routes.generated.swift"])
     ]
 
