@@ -16,6 +16,8 @@ final class RequestHandlerTests: XCTestCase {
 
   func testRegister() {
     let app = Application(.development)
+    defer { app.shutdown() }
+
     Index().register(in: app, for: "")
 
     XCTAssertEqual(app.routes.all.count, 1)
@@ -24,6 +26,8 @@ final class RequestHandlerTests: XCTestCase {
 
   func testAsyncRegister() {
     let app = Application(.development)
+    defer { app.shutdown() }
+    
     AsyncIndex().register(in: app, for: "api/hello")
 
     XCTAssertEqual(app.routes.all.count, 1)
