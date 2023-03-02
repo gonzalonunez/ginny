@@ -27,7 +27,7 @@ final class RequestHandlerTests: XCTestCase {
   func testAsyncRegister() {
     let app = Application(.development)
     defer { app.shutdown() }
-    
+
     AsyncIndex().register(in: app, for: "api/hello")
 
     XCTAssertEqual(app.routes.all.count, 1)
