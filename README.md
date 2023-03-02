@@ -99,4 +99,4 @@ Ginny was inspired by the way [Vercel](https://vercel.com/home) does routing. I'
 
 Aside from fully-supporting all Vapor features, Ginny may see support added for [AWS Lambda](https://github.com/swift-server/swift-aws-lambda-runtime) functions. If you would like to see improved serverless support for Swift, feel free to file a Github issue.
 
-An even more compelling option would be adding a community-supported Swift runtime to [Vercel](https://github.com/vercel/vercel/blob/main/DEVELOPING_A_RUNTIME.md).
+An even more compelling option that is also being considered is the addition of a community-supported Swift runtime to [Vercel](https://github.com/vercel/vercel/blob/main/DEVELOPING_A_RUNTIME.md).
