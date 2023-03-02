@@ -16,7 +16,26 @@ defer { app.shutdown() }
 + try Ginny.run(app: app)
 ```
 
-From here on out, as long as the plugin is running, routes will be generated based on the way you have organized the files in your Vapor app's target.
+From here on out, as long as the plugin is running, routes will be generated based on the way you have organized the files in your Vapor app's target and what's inside of them.
+
+The following folder structure:
+
+```
+pages/
+├── api/
+│   ├── hello.swift
+│   ├── world
+│   │   ├── world.index.swift
+│   │   ├── foo.swift
+```
+
+Results in the following routes:
+
+```
+/api/hello
+/api/world
+/api/world/foo
+```
 
 `Ginny` looks inside your `/pages` directory for `.swift` files that contain conformances to either `RequestHandler` or `AsyncRequestHandler` and generates the rest of the route registration code for you.
 
