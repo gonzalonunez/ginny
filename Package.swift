@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "SwiftNext",
+  name: "Ginny",
   platforms: [.macOS(.v12)],
   products: [
     .executable(
@@ -11,16 +11,16 @@ let package = Package(
       targets: ["Example"]),
 
     .library(
-      name: "SwiftNext",
-      targets: ["SwiftNext"]),
+      name: "Ginny",
+      targets: ["Ginny"]),
 
     .executable(
-      name: "SwiftNextCLI",
-      targets: ["SwiftNextCLI"]),
+      name: "GinnyCLI",
+      targets: ["GinnyCLI"]),
 
     .plugin(
-      name: "SwiftNextPlugin",
-      targets: ["SwiftNextPlugin"]),
+      name: "GinnyPlugin",
+      targets: ["GinnyPlugin"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-syntax", revision: "cd772d1"),
@@ -30,21 +30,21 @@ let package = Package(
     .executableTarget(
       name: "Example",
       dependencies: [
-        "SwiftNext",
+        "Ginny",
         .product(name: "Vapor", package: "Vapor"),
       ],
       plugins: [
-        .plugin(name: "SwiftNextPlugin"),
+        .plugin(name: "GinnyPlugin"),
       ]),
 
     .target(
-      name: "SwiftNext",
+      name: "Ginny",
       dependencies: [
         .product(name: "Vapor", package: "Vapor"),
       ]),
 
     .executableTarget(
-      name: "SwiftNextCLI",
+      name: "GinnyCLI",
       dependencies: [
         .product(name: "SwiftParser", package: "swift-syntax"),
         .product(name: "SwiftSyntax", package: "swift-syntax"),
@@ -52,10 +52,10 @@ let package = Package(
       ]),
 
     .plugin(
-      name: "SwiftNextPlugin",
+      name: "GinnyPlugin",
       capability: .buildTool(),
       dependencies: [
-        "SwiftNextCLI",
+        "GinnyCLI",
       ]),
   ]
 )

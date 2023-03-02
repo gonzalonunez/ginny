@@ -1,5 +1,5 @@
 //
-//  SwiftNextCLI.swift
+//  GinnyCLI.swift
 //  
 //
 //  Created by Gonzalo Nuñez on 2/24/23.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
-enum SwiftNextError: Error {
+enum GinnyError: Error {
   case failedToCreateFile(String)
   case missingInputDirectory
   case missingStructDeclaration
@@ -21,7 +21,7 @@ struct RouteFile {
 }
 
 @main
-struct SwiftNextCLI {
+struct GinnyCLI {
 
   static func main() async throws {
     let inputDirectory = CommandLine.arguments[1]
@@ -34,7 +34,7 @@ struct SwiftNextCLI {
     let contents = """
     import Vapor
 
-    enum SwiftNext {
+    enum Ginny {
 
       static func run(app: Application) throws {
         registerRoutes(app: app)
@@ -72,7 +72,7 @@ struct SwiftNextCLI {
     let contents = """
     import Vapor
 
-    extension SwiftNext {
+    extension Ginny {
 
       static func registerRoutes(app: Application) {
         \(registrations.joined(separator: "\n\t\t"))
@@ -87,7 +87,7 @@ struct SwiftNextCLI {
 
   static func findRouteFiles(in inputDirectory: String) throws -> [RouteFile] {
     guard let enumerator = FileManager.default.enumerator(atPath: inputDirectory) else {
-      throw SwiftNextError.missingInputDirectory
+      throw GinnyError.missingInputDirectory
     }
 
     var routeFiles: [RouteFile] = []

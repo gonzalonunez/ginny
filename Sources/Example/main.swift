@@ -14,4 +14,4 @@ app.get("") { _ in
   "Hello, world!"
 }
 
-try SwiftNext.run(app: app)
+try Ginny.run(app: app)

@@ -8,12 +8,12 @@
 import Foundation
 import PackagePlugin
 
-enum SwiftNextPluginError: Error {
+enum GinnyPluginError: Error {
   case missingAPIDirectory
 }
 
 @main
-struct SwiftNextPlugin: BuildToolPlugin {
+struct GinnyPlugin: BuildToolPlugin {
 
   func createBuildCommands(
     context: PluginContext,
@@ -31,8 +31,8 @@ struct SwiftNextPlugin: BuildToolPlugin {
 
     return [
       .buildCommand(
-        displayName: "SwiftNextCLI",
-        executable: try context.tool(named: "SwiftNextCLI").path,
+        displayName: "GinnyCLI",
+        executable: try context.tool(named: "GinnyCLI").path,
         arguments: [
           tempDirectory,
           outputDirectory,
@@ -58,7 +58,7 @@ struct SwiftNextPlugin: BuildToolPlugin {
 
     /// Return input paths by doing a deep search of the `apiDirectory` directory
     guard let enumerator = FileManager.default.enumerator(atPath: apiDirectory.string) else {
-      throw SwiftNextPluginError.missingAPIDirectory
+      throw GinnyPluginError.missingAPIDirectory
     }
 
     var inputPaths: [Path] = []

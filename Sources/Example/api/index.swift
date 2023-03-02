@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftNext
+import Ginny
 import Vapor
 
 struct Index: RequestHandler {

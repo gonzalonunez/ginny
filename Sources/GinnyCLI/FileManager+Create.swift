@@ -15,7 +15,7 @@ extension FileManager {
     attributes attr: [FileAttributeKey : Any]? = nil) throws
   {
     guard createFile(atPath: path, contents: data, attributes: attr) else {
-      throw SwiftNextError.failedToCreateFile(path)
+      throw GinnyError.failedToCreateFile(path)
     }
   }
 }
