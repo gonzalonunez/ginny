@@ -96,7 +96,7 @@ Now, Ginny will run any time that you build your project if any of your API rout
 
 ## Gotchas
 
-There are a few subtleties related to how Ginny generate code for you:
+There are a few subtleties related to how Ginny generates code for you:
 
 - Normally, in other systems, files named `index` are used to refer to the root of a directory. Unfortunately, this doesn't work in Swift because you can't have two files in the same module with the same name. Ginny works around this by dropping any path components that contain `.index`, whether that's a file or a folder. This allows you to prefix your `index` files with anything else you need to disambiguate them. So, `api/hello/hello.index.swift` is routed to `api/hello` and `api/hello/world/world.index.swift` is routed to `api/hello/world/`. See the example app for more.
 
