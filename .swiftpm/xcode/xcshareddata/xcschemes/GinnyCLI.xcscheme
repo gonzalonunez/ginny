@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Example"
-               BuildableName = "Example"
-               BlueprintName = "Example"
+               BlueprintIdentifier = "GinnyCLI"
+               BuildableName = "GinnyCLI"
+               BlueprintName = "GinnyCLI"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "GinnyCLITests"
+               BuildableName = "GinnyCLITests"
+               BlueprintName = "GinnyCLITests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,26 +42,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ExampleTests"
-               BuildableName = "ExampleTests"
-               BlueprintName = "ExampleTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GinnyTests"
-               BuildableName = "GinnyTests"
-               BlueprintName = "GinnyTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
@@ -65,8 +59,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
-      useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/gonzalonunez/ginny"
+      useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -76,9 +69,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Example"
-            BuildableName = "Example"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "GinnyCLI"
+            BuildableName = "GinnyCLI"
+            BlueprintName = "GinnyCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -93,9 +86,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Example"
-            BuildableName = "Example"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "GinnyCLI"
+            BuildableName = "GinnyCLI"
+            BlueprintName = "GinnyCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -19,11 +19,11 @@ struct GinnyPlugin: BuildToolPlugin {
     context: PluginContext,
     target: Target) async throws -> [Command]
   {
-    let apiDirectory = target.directory.appending(["pages"])
+    let pagesDirectory = target.directory.appending(["pages"])
     let tempDirectory = context.pluginWorkDirectory.appending(["tmp"])
-    let outputDirectory = context.pluginWorkDirectory.appending(["pages"])
+    let outputDirectory = context.pluginWorkDirectory.appending(["generated"])
     
-    let inputPaths = try copyFiles(from: apiDirectory, to: tempDirectory)
+    let inputPaths = try copyFiles(from: pagesDirectory, to: tempDirectory)
     let outputPaths = [
       outputDirectory.appending(["Routes.generated.swift"])
     ]
@@ -42,7 +42,7 @@ struct GinnyPlugin: BuildToolPlugin {
   }
 
   func copyFiles(
-    from apiDirectory: Path,
+    from pagesDirectory: Path,
     to tempDirectory: Path) throws -> [Path]
   {
     /// Delete `tempDirectory` if it exists (from a previous run)
@@ -50,13 +50,13 @@ struct GinnyPlugin: BuildToolPlugin {
       try FileManager.default.removeItem(atPath: tempDirectory.string)
     }
 
-    /// Copy all files over from `apiDirectory` to `tempDirectory`
+    /// Copy all files over from `pagesDirectory` to `tempDirectory`
     try FileManager.default.copyItem(
-      atPath: apiDirectory.string,
+      atPath: pagesDirectory.string,
       toPath: tempDirectory.string)
 
-    /// Return input paths by doing a deep search of the `apiDirectory` directory
-    guard let enumerator = FileManager.default.enumerator(atPath: apiDirectory.string) else {
+    /// Return input paths by doing a deep search of the `pagesDirectory` directory
+    guard let enumerator = FileManager.default.enumerator(atPath: pagesDirectory.string) else {
       throw GinnyPluginError.missingAPIDirectory
     }
 
@@ -66,7 +66,7 @@ struct GinnyPlugin: BuildToolPlugin {
       guard file.hasSuffix(swiftSuffix) else {
         continue
       }
-      let inputPath = apiDirectory.appending([file])
+      let inputPath = pagesDirectory.appending([file])
       inputPaths.append(inputPath)
     }
     return inputPaths

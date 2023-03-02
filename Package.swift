@@ -23,7 +23,8 @@ let package = Package(
       targets: ["GinnyPlugin"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-syntax", revision: "cd772d1"),
+    .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.2"),
+    .package(url: "https://github.com/apple/swift-syntax.git", revision: "cd772d1"),
     .package(url: "https://github.com/vapor/vapor.git", from: "4.7.0"),
   ],
   targets: [
@@ -58,9 +59,16 @@ let package = Package(
     .executableTarget(
       name: "GinnyCLI",
       dependencies: [
+        .product(name: "ArgumentParser", package: "swift-argument-parser"),
         .product(name: "SwiftParser", package: "swift-syntax"),
         .product(name: "SwiftSyntax", package: "swift-syntax"),
         .product(name: "Vapor", package: "Vapor"),
+      ]),
+
+    .testTarget(
+      name: "GinnyCLITests",
+      dependencies: [
+        "GinnyCLI",
       ]),
 
     .plugin(

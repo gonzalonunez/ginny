@@ -5,6 +5,7 @@
 //  Created by Gonzalo Nuñez on 2/24/23.
 //
 
+import ArgumentParser
 import Foundation
 import SwiftParser
 import SwiftSyntax
@@ -12,7 +13,7 @@ import SwiftSyntax
 enum GinnyError: Error {
   case failedToCreateFile(String)
   case missingInputDirectory
-  case missingStructDeclaration
+  case noRequestHandlersFound
 }
 
 struct RouteFile {
@@ -21,19 +22,24 @@ struct RouteFile {
 }
 
 @main
-struct GinnyCLI {
+struct GinnyCLI: ParsableCommand {
 
-  static func main() async throws {
-    let inputDirectory = CommandLine.arguments[1]
-    let outputDirectory = CommandLine.arguments[2]
-    try generateRoutesFile(from: inputDirectory, in: outputDirectory)
+  mutating func run() throws {
+    try generateRoutesFile()
   }
 
-  static func generateRoutesFile(
-    from inputDirectory: String,
-    in directory: String) throws
-  {
-    let routeFiles = try findRouteFiles(in: inputDirectory)
+  // MARK: Internal
+
+  @Argument(help: "The directory containing your routes")
+  var inputDirectory: URL
+
+  @Argument(help: "The directory in which to generate code")
+  var outputDirectory: URL
+
+  // MARK: Private
+
+  private func generateRoutesFile() throws {
+    let routeFiles = try findRouteFiles()
 
     var registrations: [String] = []
     for fileHandler in routeFiles {
@@ -43,7 +49,11 @@ struct GinnyCLI {
       let visitor = RequestHandlerVisitor(viewMode: .sourceAccurate)
       visitor.walk(sourceFile)
 
-      for identifier in visitor.identifiers {
+      if visitor.identifiers.isEmpty {
+        throw GinnyError.noRequestHandlersFound
+      }
+
+      for identifier in visitor.identifiers.sorted() {
         registrations.append("""
         \(identifier)().register(in: self, for: \"\(fileHandler.routeName)\")
         """)
@@ -61,13 +71,19 @@ struct GinnyCLI {
     }
     """
 
+    if !FileManager.default.fileExists(atPath: outputDirectory.path, isDirectory: nil) {
+      try FileManager.default.createDirectory(
+        at: outputDirectory,
+        withIntermediateDirectories: true)
+    }
+
     try FileManager.default.createFileThrows(
-      atPath: directory.appending("/" + "Routes.generated.swift"),
+      atPath: outputDirectory.appendingPathComponent("Routes.generated.swift").path,
       contents: contents.data(using: .utf8))
   }
 
-  static func findRouteFiles(in inputDirectory: String) throws -> [RouteFile] {
-    guard let enumerator = FileManager.default.enumerator(atPath: inputDirectory) else {
+  private func findRouteFiles() throws -> [RouteFile] {
+    guard let enumerator = FileManager.default.enumerator(atPath: inputDirectory.path) else {
       throw GinnyError.missingInputDirectory
     }
 
@@ -84,12 +100,32 @@ struct GinnyCLI {
         .filter { !$0.hasSuffix("index") }
         .map { try String($0).transformingParametersIfNeeded() }
 
-      let inputPath = inputDirectory.appending("/" + file)
-      let url = URL(fileURLWithPath: inputPath)
-      let file = RouteFile(routeName: routeComponents.joined(separator: "/"), url: url)
+      let fileURL = inputDirectory.appendingPathComponent(file)
+      let file = RouteFile(routeName: routeComponents.joined(separator: "/"), url: fileURL)
       routeFiles.append(file)
     }
 
     return routeFiles
   }
 }
+
+// MARK: - URL
+
+extension URL: ExpressibleByArgument {
+
+  public init?(argument: String) {
+    self.init(fileURLWithPath: argument, isDirectory: true) // We're working with local directory URLs only
+  }
+}
+
+// MARK: - GinnyCLI
+
+#if DEBUG
+extension GinnyCLI {
+
+  init(inputDirectory: URL, outputDirectory: URL) {
+    self.inputDirectory = inputDirectory
+    self.outputDirectory = outputDirectory
+  }
+}
+#endif
