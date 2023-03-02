@@ -1,5 +1,9 @@
 # Ginny 💧
 
+![](https://github.com/gonzalonunez/ginny/actions/workflows/build.yml/badge.svg)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fgonzalonunez%2Fginny%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/gonzalonunez/ginny)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fgonzalonunez%2Fginny%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/gonzalonunez/ginny)
+
 Ginny is a [Swift Package plugin](https://developer.apple.com/videos/play/wwdc2022/110359/) that enables file-based routing for [Vapor](https://vapor.codes) apps. It works by generating code at build-time that registers routes like you would in any normal Vapor app.
 
 ## Basic Usage
