@@ -587,6 +587,78 @@ final class GinnyCLITests: XCTestCase {
     XCTAssertEqual(expected, actual)
   }
 
+  func testGlobalSorting() throws {
+    let pagesDirectory = tempDirectory.appendingPathComponent("pages", isDirectory: true)
+    let outputDirectory = tempDirectory.appendingPathComponent("generated", isDirectory: true)
+
+    try fileManager.createDirectory(
+      atPath: pagesDirectory.path,
+      withIntermediateDirectories: true)
+
+    let userFile = """
+    import Foundation
+    import Ginny
+    import Vapor
+
+    struct User: RequestHandler {
+
+      var method: HTTPMethod {
+        .GET
+      }
+
+      func handle(req: Request) throws -> String {
+        "Hello, world!"
+      }
+    }
+    """
+
+    try fileManager.createFileThrows(
+      atPath: pagesDirectory.appendingPathComponent("user.swift").path,
+      contents: userFile.data(using: .utf8))
+
+    let apiFile = """
+    import Foundation
+    import Ginny
+    import Vapor
+
+    struct API: RequestHandler {
+
+      var method: HTTPMethod {
+        .GET
+      }
+
+      func handle(req: Request) throws -> String {
+        "Hello, world!"
+      }
+    }
+    """
+
+    try fileManager.createFileThrows(
+      atPath: pagesDirectory.appendingPathComponent("api.swift").path,
+      contents: apiFile.data(using: .utf8))
+
+    var cli = GinnyCLI(
+      inputDirectory: pagesDirectory,
+      outputDirectory: outputDirectory)
+
+    try cli.run()
+
+    let expected = """
+    import Vapor
+
+    extension Application {
+
+      func registerRoutes() {
+        API().register(in: self, for: "api")\n\t\tUser().register(in: self, for: "user")
+      }
+    }
+    """
+
+    let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
+    let actual = try String(contentsOf: routesFile, encoding: .utf8)
+    XCTAssertEqual(expected, actual)
+  }
+
   // MARK: Private
 
   private let fileManager = FileManager.default

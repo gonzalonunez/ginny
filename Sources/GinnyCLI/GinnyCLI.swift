@@ -39,7 +39,9 @@ struct GinnyCLI: ParsableCommand {
   // MARK: Private
 
   private func generateRoutesFile() throws {
-    let routeFiles = try findRouteFiles()
+    let routeFiles = try findRouteFiles().sorted { lhs, rhs in
+      lhs.routeName < rhs.routeName
+    }
 
     var registrations: [String] = []
     for fileHandler in routeFiles {

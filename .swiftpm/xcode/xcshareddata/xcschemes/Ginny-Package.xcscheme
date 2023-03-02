@@ -116,16 +116,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ExampleTests"
-               BuildableName = "ExampleTests"
-               BlueprintName = "ExampleTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "GinnyCLITests"
                BuildableName = "GinnyCLITests"
                BlueprintName = "GinnyCLITests"

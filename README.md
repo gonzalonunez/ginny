@@ -98,7 +98,7 @@ There are a few subtleties related to how Ginny generate code for you:
 
 - Ginny is smart enough to support two `RequestHandler`s in the same file, it will register both of them for you. So, you can declare multiple handlers in the same file with different HTTP methods and get the behavior that you would expect: `GET api/hello` and `POST api/hello`, for example.
 
-- Ginny registers routes in alphabetic order according to the identifier of the `RequestHandler`. You can always inspect `Routes.generated.swift` in your build logs to see the code that Ginny generates.
+- Ginny registers routes in alphabetic order according to the file system. You can always inspect `Routes.generated.swift` in your build logs to see the code that Ginny generates. If you'd like different behavior here, please file a GitHub issue.
 
 ## Feature parity with Vapor
 
