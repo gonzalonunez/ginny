@@ -1,6 +1,6 @@
 //
 //  GinnyCLI.swift
-//  
+//
 //
 //  Created by Gonzalo Nuñez on 2/24/23.
 //
@@ -56,22 +56,23 @@ struct GinnyCLI: ParsableCommand {
       }
 
       for identifier in visitor.identifiers.sorted() {
-        registrations.append("""
-        \(identifier)().register(in: self, for: \"\(fileHandler.routeName)\")
-        """)
+        registrations.append(
+          """
+          \(identifier)().register(in: self, for: \"\(fileHandler.routeName)\")
+          """)
       }
     }
 
     let contents = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        \(registrations.joined(separator: "\n\t\t"))
+        func registerRoutes() {
+          \(registrations.joined(separator: "\n\t\t"))
+        }
       }
-    }
-    """
+      """
 
     if !FileManager.default.fileExists(atPath: outputDirectory.path, isDirectory: nil) {
       try FileManager.default.createDirectory(
@@ -96,7 +97,8 @@ struct GinnyCLI: ParsableCommand {
         continue
       }
 
-      let routeComponents = try file
+      let routeComponents =
+        try file
         .dropLast(swiftSuffix.count)
         .split(separator: "/")
         .filter { !$0.hasSuffix("index") }
@@ -116,18 +118,18 @@ struct GinnyCLI: ParsableCommand {
 extension URL: ExpressibleByArgument {
 
   public init?(argument: String) {
-    self.init(fileURLWithPath: argument, isDirectory: true) // We're working with local directory URLs only
+    self.init(fileURLWithPath: argument, isDirectory: true)  // We're working with local directory URLs only
   }
 }
 
 // MARK: - GinnyCLI
 
 #if DEBUG
-extension GinnyCLI {
+  extension GinnyCLI {
 
-  init(inputDirectory: URL, outputDirectory: URL) {
-    self.inputDirectory = inputDirectory
-    self.outputDirectory = outputDirectory
+    init(inputDirectory: URL, outputDirectory: URL) {
+      self.inputDirectory = inputDirectory
+      self.outputDirectory = outputDirectory
+    }
   }
-}
 #endif

@@ -35,19 +35,19 @@ let package = Package(
         .product(name: "Vapor", package: "Vapor"),
       ],
       plugins: [
-        .plugin(name: "GinnyPlugin"),
+        .plugin(name: "GinnyPlugin")
       ]),
 
     .target(
       name: "Ginny",
       dependencies: [
-        .product(name: "Vapor", package: "Vapor"),
+        .product(name: "Vapor", package: "Vapor")
       ]),
 
     .testTarget(
       name: "GinnyTests",
       dependencies: [
-        "Ginny",
+        "Ginny"
       ]),
 
     .executableTarget(
@@ -62,14 +62,14 @@ let package = Package(
     .testTarget(
       name: "GinnyCLITests",
       dependencies: [
-        "GinnyCLI",
+        "GinnyCLI"
       ]),
 
     .plugin(
       name: "GinnyPlugin",
       capability: .buildTool(),
       dependencies: [
-        "GinnyCLI",
+        "GinnyCLI"
       ]),
   ]
 )

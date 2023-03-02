@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  
+//
 //
 //  Created by Gonzalo Nuñez on 2/24/23.
 //
@@ -17,12 +17,12 @@ struct GinnyPlugin: BuildToolPlugin {
 
   func createBuildCommands(
     context: PluginContext,
-    target: Target) async throws -> [Command]
-  {
+    target: Target
+  ) async throws -> [Command] {
     let pagesDirectory = target.directory.appending(["pages"])
     let tempDirectory = context.pluginWorkDirectory.appending(["tmp"])
     let outputDirectory = context.pluginWorkDirectory.appending(["generated"])
-    
+
     let inputPaths = try copyFiles(from: pagesDirectory, to: tempDirectory)
     let outputPaths = [
       outputDirectory.appending(["Routes.generated.swift"])
@@ -37,14 +37,14 @@ struct GinnyPlugin: BuildToolPlugin {
           outputDirectory,
         ],
         inputFiles: inputPaths,
-        outputFiles: outputPaths),
+        outputFiles: outputPaths)
     ]
   }
 
   func copyFiles(
     from pagesDirectory: Path,
-    to tempDirectory: Path) throws -> [Path]
-  {
+    to tempDirectory: Path
+  ) throws -> [Path] {
     /// Delete `tempDirectory` if it exists (from a previous run)
     if FileManager.default.fileExists(atPath: tempDirectory.string, isDirectory: nil) {
       try FileManager.default.removeItem(atPath: tempDirectory.string)

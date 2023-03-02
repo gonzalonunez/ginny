@@ -1,6 +1,6 @@
 //
 //  RequestHandlerVisitorTests.swift
-//  
+//
 //
 //  Created by Gonzalo Nuñez on 3/2/23.
 //
@@ -37,21 +37,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct Index: RequestHandler {
+      struct Index: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("index.swift").path,
@@ -64,15 +64,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        Index().register(in: self, for: "")
+        func registerRoutes() {
+          Index().register(in: self, for: "")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -88,33 +88,33 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    // MARK: - AsyncIndex
+      // MARK: - AsyncIndex
 
-    struct AsyncIndex: AsyncRequestHandler {
+      struct AsyncIndex: AsyncRequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) async throws -> Greeting {
+          await fetchGreeting()
+        }
+
+        func fetchGreeting() async -> Greeting {
+          .init(hello: "world")
+        }
       }
 
-      func handle(req: Request) async throws -> Greeting {
-        await fetchGreeting()
+      // MARK: - Greeting
+
+      struct Greeting: Content {
+        var hello: String
       }
-
-      func fetchGreeting() async -> Greeting {
-        .init(hello: "world")
-      }
-    }
-
-    // MARK: - Greeting
-
-    struct Greeting: Content {
-      var hello: String
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("index.swift").path,
@@ -127,15 +127,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        AsyncIndex().register(in: self, for: "")
+        func registerRoutes() {
+          AsyncIndex().register(in: self, for: "")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -151,41 +151,41 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = #"""
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    // MARK - GetWorld
+      // MARK - GetWorld
 
-    struct GetWorld: RequestHandler {
+      struct GetWorld: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
 
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
+      // MARK - PostWorld
+
+      struct PostWorld: RequestHandler {
+
+        var method: HTTPMethod {
+          .POST
+        }
+
+        func handle(req: Request) throws -> String {
+          let body = try req.content.decode(PostWorldBody.self)
+          return "Hello, \(body.name)!"
+        }
       }
-    }
 
-    // MARK - PostWorld
-
-    struct PostWorld: RequestHandler {
-
-      var method: HTTPMethod {
-        .POST
+      struct PostWorldBody: Content {
+        var name: String
       }
-
-      func handle(req: Request) throws -> String {
-        let body = try req.content.decode(PostWorldBody.self)
-        return "Hello, \(body.name)!"
-      }
-    }
-
-    struct PostWorldBody: Content {
-      var name: String
-    }
-    """#
+      """#
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("index.swift").path,
@@ -198,15 +198,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        GetWorld().register(in: self, for: "")\n\t\tPostWorld().register(in: self, for: "")
+        func registerRoutes() {
+          GetWorld().register(in: self, for: "")\n\t\tPostWorld().register(in: self, for: "")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -222,21 +222,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct Index {
+      struct Index {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("index.swift").path,
@@ -264,12 +264,12 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {\n    \n  }\n}
-    """
+        func registerRoutes() {\n    \n  }\n}
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -286,21 +286,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct APIIndex: RequestHandler {
+      struct APIIndex: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: apiDirectory.appendingPathComponent("index.swift").path,
@@ -313,15 +313,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        APIIndex().register(in: self, for: "api")
+        func registerRoutes() {
+          APIIndex().register(in: self, for: "api")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -337,21 +337,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let apiFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct API: RequestHandler {
+      struct API: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("api.swift").path,
@@ -364,15 +364,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        API().register(in: self, for: "api")
+        func registerRoutes() {
+          API().register(in: self, for: "api")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -389,21 +389,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct APIIndex: RequestHandler {
+      struct APIIndex: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: apiDirectory.appendingPathComponent("api.index.swift").path,
@@ -416,15 +416,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        APIIndex().register(in: self, for: "api")
+        func registerRoutes() {
+          APIIndex().register(in: self, for: "api")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -441,21 +441,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct User: RequestHandler {
+      struct User: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: userDirectory.appendingPathComponent("[id].swift").path,
@@ -468,15 +468,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        User().register(in: self, for: "user/:id")
+        func registerRoutes() {
+          User().register(in: self, for: "user/:id")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -493,21 +493,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct User: RequestHandler {
+      struct User: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: userDirectory.appendingPathComponent("[...id].swift").path,
@@ -520,15 +520,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        User().register(in: self, for: "user/**")
+        func registerRoutes() {
+          User().register(in: self, for: "user/**")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -545,21 +545,21 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let indexFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct User: RequestHandler {
+      struct User: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: userDirectory.appendingPathComponent("[...slug].swift").path,
@@ -572,15 +572,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        User().register(in: self, for: "user/**")
+        func registerRoutes() {
+          User().register(in: self, for: "user/**")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
@@ -596,42 +596,42 @@ final class GinnyCLITests: XCTestCase {
       withIntermediateDirectories: true)
 
     let userFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct User: RequestHandler {
+      struct User: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("user.swift").path,
       contents: userFile.data(using: .utf8))
 
     let apiFile = """
-    import Foundation
-    import Ginny
-    import Vapor
+      import Foundation
+      import Ginny
+      import Vapor
 
-    struct API: RequestHandler {
+      struct API: RequestHandler {
 
-      var method: HTTPMethod {
-        .GET
+        var method: HTTPMethod {
+          .GET
+        }
+
+        func handle(req: Request) throws -> String {
+          "Hello, world!"
+        }
       }
-
-      func handle(req: Request) throws -> String {
-        "Hello, world!"
-      }
-    }
-    """
+      """
 
     try fileManager.createFileThrows(
       atPath: pagesDirectory.appendingPathComponent("api.swift").path,
@@ -644,15 +644,15 @@ final class GinnyCLITests: XCTestCase {
     try cli.run()
 
     let expected = """
-    import Vapor
+      import Vapor
 
-    extension Application {
+      extension Application {
 
-      func registerRoutes() {
-        API().register(in: self, for: "api")\n\t\tUser().register(in: self, for: "user")
+        func registerRoutes() {
+          API().register(in: self, for: "api")\n\t\tUser().register(in: self, for: "user")
+        }
       }
-    }
-    """
+      """
 
     let routesFile = outputDirectory.appendingPathComponent("Routes.generated.swift")
     let actual = try String(contentsOf: routesFile, encoding: .utf8)
