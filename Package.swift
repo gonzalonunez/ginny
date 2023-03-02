@@ -24,7 +24,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.2"),
-    .package(url: "https://github.com/apple/swift-syntax.git", revision: "cd772d1"),
+    .package(url: "https://github.com/apple/swift-syntax.git", exact: "0.50800.0-SNAPSHOT-2022-12-29-a"),
     .package(url: "https://github.com/vapor/vapor.git", from: "4.7.0"),
   ],
   targets: [
