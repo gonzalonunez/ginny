@@ -46,7 +46,7 @@ import Foundation
 import Ginny
 import Vapor
 
-struct HelloIndex: RequestHandler {
+struct Hello: RequestHandler {
 
   var method: HTTPMethod {
     .GET
@@ -81,7 +81,7 @@ curl -X GET http://localhost:8080/api/hello
   name: "MyApp",
   dependencies: [
     .product(name: "Ginny", package: "ginny"),
-    .product(name: "Vapor", package: "Vapor"),
+    .product(name: "Vapor", package: "vapor"),
    ],
   plugins: [
     .plugin(name: "GinnyPlugin", package: "ginny"),
