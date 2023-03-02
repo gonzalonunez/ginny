@@ -1,6 +1,6 @@
 //
 //  index.swift
-//  
+//
 //
 //  Created by Gonzalo Nuñez on 2/24/23.
 //
@@ -10,7 +10,7 @@ import Ginny
 import Vapor
 
 struct Index: RequestHandler {
-  
+
   var method: HTTPMethod {
     .GET
   }

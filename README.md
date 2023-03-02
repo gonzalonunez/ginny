@@ -7,6 +7,7 @@ Ginny is a [Swift Package plugin](https://developer.apple.com/videos/play/wwdc20
 Ginny removes some of the boilerplate related to routing in Vapor apps while supporting the majority of its features. (For a list of unsupported features, see below.)
 
 Using Ginny is as simple as a one-line change:
+
 ```diff
 let app = try Application(.detect())
 defer { app.shutdown() }
@@ -15,9 +16,12 @@ defer { app.shutdown() }
 + try Ginny.run(app: app)
 ```
 
-From here on out, as long as the plugin is running, routes will be generated based on the way you have organized the files in your Vapor app's target. `Ginny` looks inside your `.swift` files for conformances to either `RequestHandler` or `AsyncRequestHandler` and generates the rest of the route registration code for you.
+From here on out, as long as the plugin is running, routes will be generated based on the way you have organized the files in your Vapor app's target.
 
-For example, take the following file `api/hello.swift`:
+`Ginny` looks inside your `/pages` directory for `.swift` files that contain conformances to either `RequestHandler` or `AsyncRequestHandler` and generates the rest of the route registration code for you.
+
+For example, take the following file `/pages/api/hello.swift`:
+
 ```swift
 import Foundation
 import Ginny
@@ -35,9 +39,10 @@ struct HelloIndex: RequestHandler {
 }
 ```
 
-Upon building your project, Ginny finds the `RequestHandler` inside of `/api/hello.swift` and generates the Vapor boilerplate under-the-hood to register your route. You can always see the exact code that Ginny generates by checking your target's build logs for `App.generated.swift` and `Routes.generated.swift`.
+Each time that your project builds, Ginny finds the `RequestHandler` inside of `/pages/api/hello.swift` and generates the Vapor boilerplate under-the-hood to register your route. You can always see the exact code that Ginny generates by checking your target's build logs for `App.generated.swift` and `Routes.generated.swift`.
 
 From here, you can run your server like you would normally and make a request to the corresponding endpoint:
+
 ```
 curl -X GET http://localhost:8080/api/hello
 ```
@@ -45,11 +50,13 @@ curl -X GET http://localhost:8080/api/hello
 ## Installation
 
 1. Add Ginny as a dependency in your `Package.swift`:
+
 ```swift
 package(url: "https://github.com/gonzalonunez/ginny", from: "0.1.0"),
 ```
 
 2. In your Vapor app's executable, add the `Ginny` library as a dependency and the `GinnyPlugin` as a plugin. See the example app for more.
+
 ```swift
 .executableTarget(
   name: "MyApp",

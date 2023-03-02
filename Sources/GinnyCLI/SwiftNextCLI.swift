@@ -97,7 +97,7 @@ struct GinnyCLI {
         continue
       }
 
-      let routeComponents = try ["api"] + file
+      let routeComponents = try file
         .dropLast(swiftSuffix.count)
         .split(separator: "/")
         .filter { !$0.hasSuffix("index") }

@@ -37,10 +37,22 @@ let package = Package(
         .plugin(name: "GinnyPlugin"),
       ]),
 
+    .testTarget(
+      name: "ExampleTests",
+      dependencies: [
+        "Example",
+      ]),
+
     .target(
       name: "Ginny",
       dependencies: [
         .product(name: "Vapor", package: "Vapor"),
+      ]),
+
+    .testTarget(
+      name: "GinnyTests",
+      dependencies: [
+        "Ginny",
       ]),
 
     .executableTarget(

@@ -19,9 +19,9 @@ struct GinnyPlugin: BuildToolPlugin {
     context: PluginContext,
     target: Target) async throws -> [Command]
   {
-    let apiDirectory = target.directory.appending(["api"])
+    let apiDirectory = target.directory.appending(["pages"])
     let tempDirectory = context.pluginWorkDirectory.appending(["tmp"])
-    let outputDirectory = context.pluginWorkDirectory.appending(["api"])
+    let outputDirectory = context.pluginWorkDirectory.appending(["pages"])
     
     let inputPaths = try copyFiles(from: apiDirectory, to: tempDirectory)
     let outputPaths = [
