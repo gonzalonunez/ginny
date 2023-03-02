@@ -71,7 +71,7 @@ curl -X GET http://localhost:8080/api/hello
 1. Add Ginny as a dependency in your `Package.swift`:
 
 ```swift
-package(url: "https://github.com/gonzalonunez/ginny", from: "0.1.0"),
+.package(url: "https://github.com/gonzalonunez/ginny.git", from: "0.1.1"),
 ```
 
 2. In your Vapor app's executable, add the `Ginny` library as a dependency and the `GinnyPlugin` as a plugin. See the example app for more.
@@ -80,11 +80,11 @@ package(url: "https://github.com/gonzalonunez/ginny", from: "0.1.0"),
 .executableTarget(
   name: "MyApp",
   dependencies: [
-    .product(name: "Ginny", package: "Ginny"),
+    .product(name: "Ginny", package: "ginny"),
     .product(name: "Vapor", package: "Vapor"),
    ],
   plugins: [
-    .plugin(name: "GinnyPlugin", package: "Ginny"),
+    .plugin(name: "GinnyPlugin", package: "ginny"),
    ]),
 ```
 
