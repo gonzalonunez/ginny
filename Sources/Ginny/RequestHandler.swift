@@ -28,4 +28,3 @@ public protocol RequestHandler {
   /// - Returns: The response to the request.
   func handle(req: Request) throws -> Response
 }
-

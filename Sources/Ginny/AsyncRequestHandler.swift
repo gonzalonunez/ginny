@@ -28,4 +28,3 @@ public protocol AsyncRequestHandler {
   /// - Returns: An `AsyncResponseEncodable` response.
   func handle(req: Request) async throws -> Response
 }
-
