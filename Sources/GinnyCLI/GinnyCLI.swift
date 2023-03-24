@@ -83,7 +83,6 @@ struct GinnyCLI: ParsableCommand {
 
       extension Application {
 
-        /// Registers all routes.
         func registerRoutes() {
           \(registrations.joined(separator: "\n\t\t"))
         }
