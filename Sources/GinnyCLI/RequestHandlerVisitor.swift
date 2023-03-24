@@ -8,9 +8,9 @@
 import Foundation
 import SwiftSyntax
 
-// MARK: - RequestHandlerVisitor
-
+/// Visitor for finding `RequestHandler` and `AsyncRequestHandler` classes.
 final class RequestHandlerVisitor: SyntaxVisitor {
+  /// An array of identifiers for `RequestHandler` and `AsyncRequestHandler` classes.
   var identifiers: [String] = []
 
   override func visit(_ node: TypeInheritanceClauseSyntax) -> SyntaxVisitorContinueKind {
@@ -30,6 +30,7 @@ final class RequestHandlerVisitor: SyntaxVisitor {
 
 extension Syntax {
 
+  /// Returns the identifier of a `ClassDeclSyntax` or `StructDeclSyntax` if it exists.
   var classOrStructIdentifier: String? {
     let tokenSyntax: TokenSyntax
     if let asClass = self.as(ClassDeclSyntax.self) {
@@ -47,6 +48,7 @@ extension Syntax {
 
 extension TypeInheritanceClauseSyntax {
 
+  /// Returns `true` if the `TypeInheritanceClauseSyntax` is a `RequestHandler` or `AsyncRequestHandler`.
   var isRequestHandler: Bool {
     inheritedTypeCollection.contains { node in
       let typeNameText = SimpleTypeIdentifierSyntax(node.typeName)?.name.text
@@ -54,3 +56,4 @@ extension TypeInheritanceClauseSyntax {
     }
   }
 }
+

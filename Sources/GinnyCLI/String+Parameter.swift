@@ -7,8 +7,15 @@
 
 import Foundation
 
+/// An extension to `String` to transform parameters if needed.
 extension String {
 
+  /**
+   Transforms parameters if needed.
+
+   - Returns: A new string with the parameters transformed.
+   - Throws: `NSRegularExpression` errors if the pattern is invalid.
+   */
   func transformingParametersIfNeeded() throws -> String {
     let range = NSRange(startIndex..<endIndex, in: self)
     let regex = try NSRegularExpression(pattern: #"(?<=\[).*(?=\])"#)
@@ -29,3 +36,4 @@ extension String {
     }
   }
 }
+

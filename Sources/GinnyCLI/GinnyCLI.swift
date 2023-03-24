@@ -10,34 +10,49 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
+/// Errors thrown by `GinnyCLI`.
 enum GinnyError: Error {
+  /// Thrown when a file fails to be created.
   case failedToCreateFile(String)
+
+  /// Thrown when the input directory is missing.
   case missingInputDirectory
+
+  /// Thrown when no request handlers are found.
   case noRequestHandlersFound
 }
 
+/// A `struct` representing a route file.
 struct RouteFile {
+  /// The name of the route.
   var routeName: String
+
+  /// The `URL` of the route file.
   var url: URL
 }
 
+/// The main entry point for the `GinnyCLI` command line tool.
 @main
 struct GinnyCLI: ParsableCommand {
 
+  /// Runs the command.
   mutating func run() throws {
     try generateRoutesFile()
   }
 
   // MARK: Internal
 
+  /// The directory containing your routes.
   @Argument(help: "The directory containing your routes")
   var inputDirectory: URL
 
+  /// The directory in which to generate code.
   @Argument(help: "The directory in which to generate code")
   var outputDirectory: URL
 
   // MARK: Private
 
+  /// Generates the routes file.
   private func generateRoutesFile() throws {
     let routeFiles = try findRouteFiles().sorted { lhs, rhs in
       lhs.routeName < rhs.routeName
@@ -68,6 +83,7 @@ struct GinnyCLI: ParsableCommand {
 
       extension Application {
 
+        /// Registers all routes.
         func registerRoutes() {
           \(registrations.joined(separator: "\n\t\t"))
         }
@@ -85,6 +101,7 @@ struct GinnyCLI: ParsableCommand {
       contents: contents.data(using: .utf8))
   }
 
+  /// Finds all route files.
   private func findRouteFiles() throws -> [RouteFile] {
     guard let enumerator = FileManager.default.enumerator(atPath: inputDirectory.path) else {
       throw GinnyError.missingInputDirectory
@@ -117,6 +134,7 @@ struct GinnyCLI: ParsableCommand {
 
 extension URL: ExpressibleByArgument {
 
+  /// Creates a new `URL` from an argument.
   public init?(argument: String) {
     self.init(fileURLWithPath: argument, isDirectory: true)  // We're working with local directory URLs only
   }
@@ -127,9 +145,11 @@ extension URL: ExpressibleByArgument {
 #if DEBUG
   extension GinnyCLI {
 
+    /// Creates a new `GinnyCLI` instance.
     init(inputDirectory: URL, outputDirectory: URL) {
       self.inputDirectory = inputDirectory
       self.outputDirectory = outputDirectory
     }
   }
 #endif
+
