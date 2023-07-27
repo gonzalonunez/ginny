@@ -114,10 +114,12 @@ Ginny supports most of Vapor's routing features at the moment. Support for missi
 
 - [x] [Catchall parameters](https://docs.vapor.codes/basics/routing/#catchall): Vapor's catchall parameters are supported with a `...` syntax. For example, a file named `api/user/[...slug].swift` ends up getting registered with Vapor as `api/user/***` and allows you to later retrieve the catchall. The `slug` part does not matter, you can name that whatever you'd like (and you'll have to if you want to have multiple files in the same module that support catchall parameters because you can't have two files in the same Swift module with the same name)
 
+- [x] [Route middleware](https://docs.vapor.codes/basics/routing/#route-groups): Vapor's route middlewares are supported by providing a `middlewares` array within your `RequestHandler` that will be additionally grouped with the app's current middlewares
+
 #### Not yet supported
 
 - [ ] [Anything parameters](https://docs.vapor.codes/basics/routing/#anything)
-- [ ] [Route groups and middleware](https://docs.vapor.codes/basics/routing/#route-groups)
+- [ ] [Route groups](https://docs.vapor.codes/basics/routing/#route-groups)
 - [ ] [Metadata](https://docs.vapor.codes/basics/routing/#metadata)
 
 ## Inspiration

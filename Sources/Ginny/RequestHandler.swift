@@ -27,4 +27,11 @@ public protocol RequestHandler {
   ///
   /// - Returns: The response to the request.
   func handle(req: Request) throws -> Response
+
+  /// The additional middleware group that should be applied to this request
+  var middlewares: [Middleware] { get }
+}
+
+public extension RequestHandler {
+  var middlewares: [Middleware] { [] }
 }
