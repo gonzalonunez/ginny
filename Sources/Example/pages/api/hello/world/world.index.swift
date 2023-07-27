@@ -20,6 +20,10 @@ struct GetWorld: RequestHandler {
   func handle(req: Request) throws -> String {
     "Hello, world!"
   }
+
+  var middlewares: [Middleware] = [
+    DoSomethingElseMiddleware()
+  ]
 }
 
 // MARK - PostWorld

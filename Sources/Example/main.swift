@@ -11,5 +11,6 @@ import Vapor
 let app = try Application(.detect())
 defer { app.shutdown() }
 
+app.middleware.use(DoSomethingMiddleware())
 app.registerRoutes()
 try app.run()

@@ -47,7 +47,8 @@ let package = Package(
     .testTarget(
       name: "GinnyTests",
       dependencies: [
-        "Ginny"
+        "Ginny",
+        .product(name: "XCTVapor", package: "vapor"),
       ]),
 
     .executableTarget(

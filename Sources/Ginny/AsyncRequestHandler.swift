@@ -27,4 +27,11 @@ public protocol AsyncRequestHandler {
   ///
   /// - Returns: An `AsyncResponseEncodable` response.
   func handle(req: Request) async throws -> Response
+
+  /// The additional middleware group that should be applied to this request
+  var middlewares: [Middleware] { get }
+}
+
+public extension AsyncRequestHandler {
+  var middlewares: [Middleware] { [] }
 }
