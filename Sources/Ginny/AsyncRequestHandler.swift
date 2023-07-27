@@ -32,6 +32,6 @@ public protocol AsyncRequestHandler {
   var middlewares: [Middleware] { get }
 }
 
-public extension AsyncRequestHandler {
-  var middlewares: [Middleware] { [] }
+extension AsyncRequestHandler {
+  public var middlewares: [Middleware] { [] }
 }

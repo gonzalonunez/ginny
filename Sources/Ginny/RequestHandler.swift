@@ -32,6 +32,6 @@ public protocol RequestHandler {
   var middlewares: [Middleware] { get }
 }
 
-public extension RequestHandler {
-  var middlewares: [Middleware] { [] }
+extension RequestHandler {
+  public var middlewares: [Middleware] { [] }
 }

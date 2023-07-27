@@ -1,6 +1,6 @@
 //
 //  Middlewares.swift
-//  
+//
 //
 //  Created by Mauricio Cardozo on 27/07/23.
 //

@@ -21,10 +21,9 @@ extension AsyncRequestHandler {
   public func register(in app: Application, for path: String) {
     app
       .grouped(middlewares)
-      .on(method, path.pathComponents)
-    { [handle] req async throws in
-      return try await handle(req)
-    }
+      .on(method, path.pathComponents) { [handle] req async throws in
+        return try await handle(req)
+      }
   }
 }
 
@@ -41,9 +40,8 @@ extension RequestHandler {
   public func register(in app: Application, for path: String) {
     app
       .grouped(middlewares)
-      .on(method, path.pathComponents)
-    { [handle] req throws in
-      try handle(req)
-    }
+      .on(method, path.pathComponents) { [handle] req throws in
+        try handle(req)
+      }
   }
 }

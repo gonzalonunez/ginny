@@ -6,8 +6,8 @@
 //
 
 import Vapor
-import XCTest
 import XCTVapor
+import XCTest
 
 @testable import Ginny
 
